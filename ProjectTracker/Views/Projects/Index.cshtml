@@ -1,0 +1,96 @@
+@model ProjectTrackerPageViewModel
+
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <h2>Add project</h2>
+
+        <form asp-controller="Projects" asp-action="Add" method="post" class="card card-body mb-4">
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger mb-3">
+                    <ul class="mb-0">
+                        @foreach (var kvp in ViewData.ModelState)
+                        {
+                            @foreach (var error in kvp.Value.Errors)
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        }
+                    </ul>
+                </div>
+            }
+
+            <div class="mb-3">
+                <label class="form-label">Project name</label>
+                <input class="form-control" name="Name" value="@(ViewData.ModelState.ContainsKey("Name") ? Context.Request.Form["Name"] : "")" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" name="Description">@(ViewData.ModelState.ContainsKey("Description") ? Context.Request.Form["Description"] : "")</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Owner</label>
+                <select class="form-select" name="OwnerUserId">
+                    @foreach (var user in Model.Users)
+                    {
+                        <option value="@user.Id">@user.Name (@user.Email)</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Budget</label>
+                <input class="form-control" type="number" step="0.01" name="Budget" value="@(ViewData.ModelState.ContainsKey("Budget") ? Context.Request.Form["Budget"] : "")" />
+            </div>
+
+            <button class="btn btn-primary" type="submit">Add project</button>
+        </form>
+
+        <div class="card card-body">
+            <h5>Quick demo endpoint</h5>
+            <p class="mb-2">The user list is also available from the controller:</p>
+            <a asp-controller="Projects" asp-action="Users">GET /Projects/Users</a>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <h2>Project list</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>OwnerId</th>
+                    <th>Budget</th>
+                    <th>Created</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var project in Model.Projects)
+                {
+                    <tr>
+                        <td>@project.Id</td>
+                        <td>@project.Name</td>
+                        <td>@project.OwnerUserId</td>
+                        <td>@project.Budget</td>
+                        <td>@project.CreatedAt</td>
+                        <td>
+                            <form asp-controller="Projects" asp-action="Delete" method="post">
+                                <input type="hidden" name="id" value="@project.Id" />
+                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

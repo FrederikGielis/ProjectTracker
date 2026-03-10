@@ -1,0 +1,42 @@
+using ProjectTracker.Application.Abstractions;
+using ProjectTracker.Application.Services;
+using ProjectTracker.Infrastructure.Persistence;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews()
+    .AddRazorOptions(options =>
+    {
+        options.ViewLocationFormats.Clear();
+        options.ViewLocationFormats.Add("/ProjectTracker/Views/{1}/{0}.cshtml");
+        options.ViewLocationFormats.Add("/ProjectTracker/Views/Shared/{0}.cshtml");
+    });
+builder.Services.AddScoped<ProjectService>();
+builder.Services.AddSingleton<IProjectRepository, InMemoryProjectRepository>();
+builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapStaticAssets();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Projects}/{action=Index}/{id?}")
+    .WithStaticAssets();
+
+
+app.Run();
