@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ProjectTracker.Application;
 using ProjectTracker.Application.Services;
 using ProjectTracker.Models;
 
@@ -29,7 +30,7 @@ public class ProjectsController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Add(CreateProjectInputModel input)
     {
-        var result = _projectService.AddProject(input.Name, input.Description ?? string.Empty, input.OwnerUserId, input.Budget);
+        ValidationResult? result = _projectService.AddProject(input.Name, input.Description ?? string.Empty, input.OwnerUserId, input.Budget);
 
         if (!result.IsValid)
         {
