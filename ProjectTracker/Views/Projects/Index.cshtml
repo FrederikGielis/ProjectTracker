@@ -27,12 +27,14 @@
 
             <div class="mb-3">
                 <label class="form-label">Project name</label>
-                <input class="form-control" name="Name" value="@(ViewData.ModelState.ContainsKey("Name") ? Context.Request.Form["Name"] : "")" />
+                <input class="form-control" name="Name"
+                       value="@(ViewData.ModelState.ContainsKey("Name") ? Context.Request.Form["Name"] : "")" />
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Description</label>
-                <textarea class="form-control" name="Description">@(ViewData.ModelState.ContainsKey("Description") ? Context.Request.Form["Description"] : "")</textarea>
+                <textarea class="form-control"
+                          name="Description">@(ViewData.ModelState.ContainsKey("Description") ? Context.Request.Form["Description"] : "")</textarea>
             </div>
 
             <div class="mb-3">
@@ -47,7 +49,8 @@
 
             <div class="mb-3">
                 <label class="form-label">Budget</label>
-                <input class="form-control" type="number" step="0.01" name="Budget" value="@(ViewData.ModelState.ContainsKey("Budget") ? Context.Request.Form["Budget"] : "")" />
+                <input class="form-control" type="number" step="0.01" name="Budget"
+                       value="@(ViewData.ModelState.ContainsKey("Budget") ? Context.Request.Form["Budget"] : "")" />
             </div>
 
             <button class="btn btn-primary" type="submit">Add project</button>
@@ -62,6 +65,15 @@
 
     <div class="col-md-7">
         <h2>Project list</h2>
+
+        <form method="get" asp-controller="Projects" asp-action="Index" class="mb-3 d-flex align-items-center gap-2">
+            <label class="form-label mb-0" for="maxBudget">Max budget:</label>
+            <input class="form-control" type="number" step="0.01" min="0" name="maxBudget" id="maxBudget"
+                   placeholder="Enter max budget" value="@Model.MaxBudgetFilter" style="max-width: 200px;" />
+            <button class="btn btn-primary btn-sm" type="submit">Filter</button>
+            <a asp-controller="Projects" asp-action="Index" class="btn btn-outline-secondary btn-sm">Clear</a>
+        </form>
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -91,6 +103,13 @@
                     </tr>
                 }
             </tbody>
+            <tfoot>
+                <tr class="table-active fw-bold">
+                    <td colspan="3" class="text-end">Total Budget:</td>
+                    <td>@Model.TotalBudget</td>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>

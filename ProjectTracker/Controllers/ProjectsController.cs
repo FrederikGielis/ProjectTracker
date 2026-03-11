@@ -15,12 +15,14 @@ public class ProjectsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index()
+    public IActionResult Index(decimal? maxBudget)
     {
         var vm = new ProjectTrackerPageViewModel
         {
-            Projects = _projectService.GetProjects(),
-            Users = _projectService.GetUsers()
+            Projects = _projectService.GetProjects(maxBudget),
+            Users = _projectService.GetUsers(),
+            MaxBudgetFilter = maxBudget,
+            TotalBudget = _projectService.GetTotalBudget(maxBudget)
         };
 
         return View(vm);

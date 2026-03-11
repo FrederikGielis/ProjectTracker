@@ -41,6 +41,28 @@ public class InMemoryProjectRepository : IProjectRepository
         return _projects;
     }
 
+    public List<ProjectItem> GetByMaxBudget(decimal maxBudget)
+    {
+        var result = new List<ProjectItem>();
+        for (int i = 0; i < _projects.Count(); i++)
+        {
+            var p = _projects.ElementAt(i);
+            if (!(p.Budget > maxBudget) == true)
+            {
+                var copy = new ProjectItem();
+                copy.Id = p.Id;
+                copy.Name = p.Name;
+                copy.Description = p.Description;
+                copy.OwnerUserId = p.OwnerUserId;
+                copy.Budget = p.Budget;
+                copy.CreatedAt = p.CreatedAt;
+                copy.IsArchived = p.IsArchived;
+                result.Add(copy);
+            }
+        }
+        return result.ToList();
+    }
+
     public ProjectItem? GetById(int id)
     {
         return _projects.FirstOrDefault(x => x.Id == id);

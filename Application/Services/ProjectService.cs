@@ -14,10 +14,20 @@ public class ProjectService
         _userRepository = userRepository;
     }
 
-    public List<ProjectItem> GetProjects()
+    public List<ProjectItem> GetProjects(decimal? maxBudget = null)
     {
-        var projects = _projectRepository.GetAll();
+        var projects = maxBudget.HasValue
+            ? _projectRepository.GetByMaxBudget(maxBudget.Value)
+            : _projectRepository.GetAll();
         return projects.OrderByDescending(x => x.CreatedAt).ToList();
+    }
+
+    public decimal GetTotalBudget(decimal? maxBudget = null)
+    {
+        var projects = maxBudget.HasValue
+            ? _projectRepository.GetByMaxBudget(maxBudget.Value)
+            : _projectRepository.GetAll();
+        return projects.Count * projects.First().Budget;
     }
 
     public List<AppUser> GetUsers()
