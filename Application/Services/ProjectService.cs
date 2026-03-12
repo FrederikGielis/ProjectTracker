@@ -27,7 +27,7 @@ public class ProjectService
         var projects = maxBudget.HasValue
             ? _projectRepository.GetByMaxBudget(maxBudget.Value)
             : _projectRepository.GetAll();
-        return projects.Count * projects.First().Budget;
+        return projects.Sum(p => p.Budget);
     }
 
     public List<AppUser> GetUsers()
