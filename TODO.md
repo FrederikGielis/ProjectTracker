@@ -6,6 +6,6 @@
 1. Two birds in one stone perhaps: The GetTotalBudget method in ProjectService Seems to be calculating wrongly, it also errors if there are no projects found under a certain limit, a bugfix is needed there.
 1. Refactor the GetByMaxBudget method in InMemoryProjectRepository to filter the projects more efficiently
 1. Ask a code review about class of your choice
-1. start an agent to do task x
+1. start an agent to do a code review of the project
 1. the validation in AddProject in the ProjectService is in need of unit tests. Make sure they're in the right place (optional: A bunch of if-else-statements are maybe not the best way to go, a refactor might be good!)
-1. Add a new feature: The projects need a start date (prompt well and choose a powerful model!)
+1. Add a new feature: The projects need a start date (prompt well and choose a powerful model!) 
